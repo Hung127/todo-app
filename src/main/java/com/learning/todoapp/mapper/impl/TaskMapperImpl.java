@@ -3,8 +3,10 @@ package com.learning.todoapp.mapper.impl;
 import org.springframework.stereotype.Component;
 
 import com.learning.todoapp.domain.CreateTaskRequest;
+import com.learning.todoapp.domain.UpdateTaskRequest;
 import com.learning.todoapp.domain.dto.CreateTaskRequestDto;
 import com.learning.todoapp.domain.dto.TaskDto;
+import com.learning.todoapp.domain.dto.UpdateTaskRequestDto;
 import com.learning.todoapp.domain.entity.Task;
 import com.learning.todoapp.mapper.TaskMapper;
 
@@ -21,6 +23,16 @@ public class TaskMapperImpl implements TaskMapper {
     }
 
     @Override
+    public UpdateTaskRequest fromDto(UpdateTaskRequestDto dto) {
+        return new UpdateTaskRequest(
+                dto.title(),
+                dto.description(),
+                dto.dueDate(),
+                dto.taskStatus(),
+                dto.priority());
+    }
+
+    @Override
     public TaskDto toDto(Task task) {
         return new TaskDto(
                 task.getId(),
@@ -30,4 +42,5 @@ public class TaskMapperImpl implements TaskMapper {
                 task.getPriority(),
                 task.getStatus());
     }
+
 }
