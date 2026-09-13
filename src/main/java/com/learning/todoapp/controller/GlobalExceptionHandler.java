@@ -1,5 +1,7 @@
 package com.learning.todoapp.controller;
 
+import java.util.UUID;
+
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.learning.todoapp.domain.dto.ErrorDto;
+import com.learning.todoapp.exception.TaskNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,6 +22,14 @@ public class GlobalExceptionHandler {
 
         ErrorDto errorDto = new ErrorDto(errorMessage);
         return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleTaskNotFoundException(TaskNotFoundException ex) {
+        UUID taskNotFoundId = ex.getId();
+        String errorMessage = String.format("Task with ID '%s' not found", taskNotFoundId);
+        ErrorDto errorDto = new ErrorDto(errorMessage);
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
     }
 
 }
