@@ -1,7 +1,10 @@
 package com.learning.todoapp.service.impl;
 
+import java.util.List;
 import java.time.Instant;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.learning.todoapp.domain.CreateTaskRequest;
@@ -36,5 +39,10 @@ public class TaskServiceImpl implements TaskService {
                 request.priority(), now, now);
 
         return taskRepository.save(task);
+    }
+
+    @Override
+    public List<Task> listTasks() {
+        return taskRepository.findAll(Sort.by(Direction.ASC, "created"));
     }
 }
